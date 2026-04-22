@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Assiette Équilibrée – Plan Alimentaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c4622d;
+    --terracotta-light: #e8956a;
+    --terracotta-pale: #faf0e8;
+    --olive: #6b7c3a;
+    --olive-light: #a3b56a;
+    --olive-pale: #f2f5e8;
+    --cream: #fdf8f2;
+    --warm-white: #fff9f4;
+    --stone: #7a7065;
+    --ink: #2a2420;
+    --gold: #c49a3c;
+    --gold-pale: #fdf5e0;
+    --red-food: #b5342a;
+    --blue-food: #3a6b8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 56px 32px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; bottom: -80px;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,98,45,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    left: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(107,124,58,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .hero-eyebrow span {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--terracotta-light);
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 28px; height: 1px;
+    background: var(--terracotta-light);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: var(--terracotta-light); }
+  .hero p {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 500px;
+    line-height: 1.75;
+    margin-bottom: 36px;
+  }
+  .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero-pill {
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+    font-size: 12px; padding: 6px 16px;
+    border-radius: 30px; letter-spacing: 0.04em;
+  }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 52px 24px 80px; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--terracotta);
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8ddd4;
+  }
+  .section-title .ico {
+    width: 34px; height: 34px;
+    background: var(--terracotta-pale);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+
+  /* ── ASSIETTE VISUELLE ── */
+  .plate-section { margin-bottom: 52px; }
+  .plate-visual {
+    position: relative;
+    width: 260px; height: 260px;
+    margin: 0 auto 32px;
+  }
+  .plate-outer {
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: #e8ddd4;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 2px 8px rgba(255,255,255,0.5);
+  }
+  .plate-inner {
+    width: 234px; height: 234px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Segments */
+  .seg {
+    position: absolute; width: 50%; height: 50%;
+    transform-origin: 100% 100%;
+  }
+  .seg-veggies {
+    background: #6b9c6b;
+    top: 0; left: 0;
+    transform: rotate(0deg) skewY(-30deg);
+    clip-path: polygon(100% 0%, 100% 100%, 0% 100%);
+  }
+
+  /* SVG plate approach */
+  .plate-svg { width: 260px; height: 260px; }
+
+  .plate-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .legend-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%; flex-shrink: 0;
+  }
+  .legend-content .legend-label {
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .legend-content .legend-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .legend-content .legend-sub {
+    font-size: 11px; color: var(--stone);
+  }
+
+  /* ── RÈGLES DE BASE ── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 52px;
+  }
+  .rule-card {
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -8px; right: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: rgba(196,98,45,0.07);
+    font-weight: 500;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .rule-icon { font-size: 20px; margin-bottom: 10px; }
+  .rule-card h4 {
+    font-size: 13.5px; font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--terracotta);
+  }
+  .rule-card p { font-size: 12.5px; color: var(--stone); line-height: 1.65; }
+
+  /* ── ANTI-INFLAMMATOIRE ── */
+  .anti-section { margin-bottom: 52px; }
+  .anti-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .anti-col {
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .anti-col-header {
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .anti-col.yes .anti-col-header { background: var(--olive); color: #fff; }
+  .anti-col.no .anti-col-header { background: #8a4a3a; color: #fff; }
+  .anti-col-body { background: var(--warm-white); border: 1px solid #ede5db; border-top: none; border-radius: 0 0 14px 14px; }
+  .anti-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 16px;
+    border-bottom: 1px solid #f0e8e0;
+    font-size: 13px;
+  }
+  .anti-item:last-child { border-bottom: none; }
+  .anti-item .ai-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .anti-item .ai-text { line-height: 1.5; }
+  .anti-item .ai-text strong { font-weight: 500; display: block; font-size: 13px; }
+  .anti-item .ai-text span { font-size: 11.5px; color: var(--stone); }
+
+  /* ── REPAS TYPES ── */
+  .meals-section { margin-bottom: 52px; }
+  .meal-tabs {
+    display: flex; gap: 6px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .meal-tab {
+    flex-shrink: 0;
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1px solid #ede5db;
+    background: var(--warm-white);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--stone);
+  }
+  .meal-tab.active {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: #fff;
+  }
+  .meal-panel { display: none; }
+  .meal-panel.active { display: block; }
+
+  .meal-card {
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .meal-card-header {
+    background: linear-gradient(135deg, #2a2420 0%, #3d352e 100%);
+    padding: 18px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .meal-card-header h3 {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 1.1rem; font-weight: 400;
+  }
+  .meal-kcal {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.08);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .meal-rows { padding: 4px 0; }
+  .meal-row {
+    display: flex; align-items: start; gap: 12px;
+    padding: 13px 20px;
+    border-bottom: 1px solid #f5ede5;
+  }
+  .meal-row:last-child { border-bottom: none; }
+  .meal-row-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .meal-row-icon.v { background: #e8f0d8; }
+  .meal-row-icon.p { background: #fde8d8; }
+  .meal-row-icon.g { background: #fdf5d8; }
+  .meal-row-icon.f { background: #e8f0f8; }
+  .meal-row-icon.b { background: #f0e8f0; }
+  .meal-row-text strong { font-size: 13.5px; font-weight: 500; display: block; }
+  .meal-row-text span { font-size: 12px; color: var(--stone); }
+  .meal-examples {
+    background: var(--olive-pale);
+    border-top: 1px solid #d8e0c0;
+    padding: 12px 20px;
+    font-size: 12px;
+    color: var(--olive);
+  }
+  .meal-examples strong { font-weight: 500; }
+
+  /* ── DÉFICIT ── */
+  .deficit-section { margin-bottom: 52px; }
+  .deficit-card {
+    background: var(--gold-pale);
+    border: 1px solid #e8d8a0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .deficit-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #7a5c1a;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .deficit-card p { font-size: 13px; color: #6a5010; line-height: 1.7; }
+  .deficit-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+  }
+  .deficit-num {
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .deficit-num .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: var(--terracotta);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .deficit-num .lbl { font-size: 11.5px; color: var(--stone); line-height: 1.4; }
+
+  /* ── À ÉVITER / RÉDUIRE ── */
+  .reduce-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 52px;
+  }
+  .reduce-item {
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+  .reduce-item .ri-icon { font-size: 22px; margin-bottom: 8px; }
+  .reduce-item .ri-name { font-size: 12.5px; font-weight: 500; margin-bottom: 4px; }
+  .reduce-item .ri-tip { font-size: 11px; color: var(--stone); line-height: 1.5; }
+  .reduce-item.soft { border-color: #f0c8a0; background: #fff8f2; }
+
+  /* ── HYDRATATION ── */
+  .hydro-bar {
+    background: var(--warm-white);
+    border: 1px solid #ede5db;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 52px;
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+  }
+  .hydro-icon { font-size: 2.5rem; }
+  .hydro-text h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+    color: var(--blue-food);
+  }
+  .hydro-text p { font-size: 13px; color: var(--stone); line-height: 1.65; }
+  .hydro-glasses {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .glass {
+    font-size: 18px;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    cursor: pointer;
+  }
+  .glass.filled { opacity: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 32px;
+    text-align: center;
+  }
+  footer p { font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.8; max-width: 480px; margin: 0 auto; }
+  footer strong { color: rgba(255,255,255,0.55); }
+
+  /* ── OBJECTIFS DU JOUR ── */
+  .goals-section { margin-bottom: 52px; }
+
+  .goals-date-bar {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    background: var(--ink);
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+  }
+  .goals-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: #fff;
+  }
+  .goals-score { display: flex; align-items: center; gap: 10px; }
+  .goals-score-ring { width: 48px; height: 48px; position: relative; }
+  .goals-score-ring svg { transform: rotate(-90deg); }
+  .goals-score-ring .ring-bg { fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 4; }
+  .goals-score-ring .ring-fill {
+    fill: none; stroke: var(--terracotta-light); stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 126;
+    stroke-dashoffset: 126;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+  .goals-score-pct {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; color: #fff;
+  }
+  .goals-score-label { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .goals-reset {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.5);
+    font-size: 11px; padding: 5px 12px;
+    border-radius: 20px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .goals-reset:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.8); }
+
+  .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .goal-card {
+    background: var(--warm-white);
+    border: 2px solid #ede5db;
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .goal-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(107,156,90,0.08), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .goal-card.done { border-color: #6b9c5a; background: #f3f8ee; }
+  .goal-card.done::before { opacity: 1; }
+  .goal-card:active { transform: scale(0.97); }
+
+  .goal-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .goal-emoji { font-size: 24px; line-height: 1; }
+  .goal-check {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid #d0c8be;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.25s; font-size: 13px;
+  }
+  .goal-card.done .goal-check { background: #6b9c5a; border-color: #6b9c5a; color: #fff; }
+  .goal-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+  .goal-card.done .goal-name { color: #3a6a2a; }
+  .goal-sub { font-size: 11.5px; color: var(--stone); line-height: 1.5; }
+  .goal-bar-wrap { height: 4px; background: #e8ddd4; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  .goal-bar-fill { height: 100%; border-radius: 2px; background: #d0c8be; width: 0%; transition: width 0.4s ease, background 0.3s; }
+  .goal-card.done .goal-bar-fill { width: 100%; background: #6b9c5a; }
+
+  @keyframes burst {
+    0% { transform: scale(0) rotate(0deg); opacity: 1; }
+    60% { transform: scale(1.4) rotate(20deg); opacity: 0.8; }
+    100% { transform: scale(0.8) rotate(-10deg); opacity: 0; }
+  }
+  .confetti-dot { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; animation: burst 0.5s ease forwards; }
+
+  .streak-banner {
+    display: none; margin-top: 16px;
+    background: linear-gradient(135deg, #3a5a2a, #5a8a3a);
+    border-radius: 12px; padding: 14px 20px;
+    align-items: center; gap: 12px;
+  }
+  .streak-banner.visible { display: flex; }
+  .streak-banner .sb-icon { font-size: 24px; }
+  .streak-banner .sb-text { font-size: 13px; color: #fff; line-height: 1.5; }
+  .streak-banner .sb-text strong { display: block; font-size: 14px; }
+
+  /* ── TRACKER REPAS ── */
+  .tracker-section { margin-bottom: 52px; }
+  .tracker-meals { display: flex; flex-direction: column; gap: 12px; }
+  .tracker-meal { background: var(--warm-white); border: 1px solid #ede5db; border-radius: 14px; overflow: hidden; }
+  .tm-header { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; }
+  .tm-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .tm-icon.matin { background: #fff3e0; }
+  .tm-icon.midi  { background: #e8f0d8; }
+  .tm-icon.soir  { background: #e8eef8; }
+  .tm-title { flex: 1; }
+  .tm-title strong { font-size: 14px; display: block; }
+  .tm-title span { font-size: 12px; color: var(--stone); }
+  .tm-status { font-size: 11px; padding: 4px 12px; border-radius: 20px; background: #f0e8e0; color: var(--stone); transition: all 0.3s; }
+  .tracker-meal.logged .tm-status { background: #dff0d8; color: #3a6a2a; }
+  .tm-body { display: none; padding: 0 18px 16px; border-top: 1px solid #f0e8e0; }
+  .tracker-meal.open .tm-body { display: block; }
+  .tm-checks { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .tm-check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border: 1px solid #ede5db;
+    border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    background: #fff; font-size: 13px;
+  }
+  .tm-check-item:hover { border-color: #c4a882; }
+  .tm-check-item.checked { background: #f3f8ee; border-color: #6b9c5a; color: #3a6a2a; }
+  .tm-check-item .tci-box {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 2px solid #d0c8be;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0; transition: all 0.2s;
+  }
+  .tm-check-item.checked .tci-box { background: #6b9c5a; border-color: #6b9c5a; color: #fff; }
+  .tm-log-btn {
+    margin-top: 12px; width: 100%; padding: 10px; border-radius: 10px;
+    border: none; background: var(--terracotta); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tm-log-btn:hover { background: #a84e20; }
+
+  @media (max-width: 520px) {
+    .rules-grid { grid-template-columns: 1fr; }
+    .anti-cols { grid-template-columns: 1fr; }
+    .deficit-grid { grid-template-columns: 1fr 1fr; }
+    .reduce-grid { grid-template-columns: 1fr 1fr; }
+    .goals-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span>Plan alimentaire · Recalibrage doux</span></div>
+    <h1>Composer<br>son <em>assiette</em><br>autrement</h1>
+    <p>Pas de régime, pas de privation. Un recadrage progressif de vos repas vers plus d'équilibre, moins d'inflammation et un léger déficit naturel.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">🌿 Anti-inflammatoire</span>
+      <span class="hero-pill">⚖️ Léger déficit</span>
+      <span class="hero-pill">🍽️ Aucune privation</span>
+      <span class="hero-pill">🔄 Recalibrage progressif</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- L'ASSIETTE IDÉALE -->
+  <div class="plate-section">
+    <div class="section-title"><span class="ico">🍽️</span> La méthode de l'assiette</div>
+
+    <svg class="plate-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 28px;">
+      <!-- Ombre externe -->
+      <circle cx="130" cy="134" r="117" fill="rgba(0,0,0,0.08)"/>
+      <!-- Rebord assiette -->
+      <circle cx="130" cy="130" r="117" fill="#e8ddd4"/>
+      <!-- Assiette intérieure -->
+      <circle cx="130" cy="130" r="105" fill="#fdf8f2"/>
+      <!-- Segment légumes 50% – haut gauche -->
+      <path d="M130,130 L130,25 A105,105 0 0,0 25,130 Z" fill="#6b9c5a"/>
+      <path d="M130,130 L25,130 A105,105 0 0,0 130,235 Z" fill="#8ab56e" opacity="0.85"/>
+      <!-- Segment protéines 25% – haut droite -->
+      <path d="M130,130 L130,25 A105,105 0 0,1 235,130 Z" fill="#c4622d"/>
+      <!-- Segment féculents 25% – bas droite -->
+      <path d="M130,130 L235,130 A105,105 0 0,1 130,235 Z" fill="#c49a3c"/>
+      <!-- Séparateurs -->
+      <line x1="130" y1="25" x2="130" y2="235" stroke="white" stroke-width="2.5" opacity="0.7"/>
+      <line x1="25" y1="130" x2="235" y2="130" stroke="white" stroke-width="2.5" opacity="0.7"/>
+      <!-- Labels -->
+      <text x="72" y="95" text-anchor="middle" fill="white" font-family="DM Sans, sans-serif" font-size="12" font-weight="500">Légumes</text>
+      <text x="72" y="110" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="DM Sans, sans-serif" font-size="10">50 %</text>
+      <text x="72" y="178" text-anchor="middle" fill="white" font-family="DM Sans, sans-serif" font-size="12" font-weight="500">Légumes</text>
+      <text x="72" y="193" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="DM Sans, sans-serif" font-size="10">cuits / crus</text>
+      <text x="188" y="95" text-anchor="middle" fill="white" font-family="DM Sans, sans-serif" font-size="12" font-weight="500">Protéines</text>
+      <text x="188" y="110" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="DM Sans, sans-serif" font-size="10">25 %</text>
+      <text x="188" y="178" text-anchor="middle" fill="white" font-family="DM Sans, sans-serif" font-size="12" font-weight="500">Féculents</text>
+      <text x="188" y="193" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="DM Sans, sans-serif" font-size="10">25 %</text>
+    </svg>
+
+    <div class="plate-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#6b9c5a"></div>
+        <div class="legend-content">
+          <div class="legend-pct" style="color:#4a7a3a">½ assiette</div>
+          <div class="legend-label">Légumes</div>
+          <div class="legend-sub">Crus, cuits, variés, colorés</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#c4622d"></div>
+        <div class="legend-content">
+          <div class="legend-pct" style="color:#c4622d">¼ assiette</div>
+          <div class="legend-label">Protéines</div>
+          <div class="legend-sub">Maigres, végétales ou poisson</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#c49a3c"></div>
+        <div class="legend-content">
+          <div class="legend-pct" style="color:#b5860a">¼ assiette</div>
+          <div class="legend-label">Féculents</div>
+          <div class="legend-sub">Complets, à index glycémique bas</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#3a6b8a"></div>
+        <div class="legend-content">
+          <div class="legend-pct" style="color:#3a6b8a">+ huile</div>
+          <div class="legend-label">Bonne graisse</div>
+          <div class="legend-sub">1 c.à.s d'olive ou colza / repas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÈGLES DE BASE -->
+  <div class="section-title"><span class="ico">📋</span> Les règles de base</div>
+  <div class="rules-grid" style="margin-bottom:52px">
+    <div class="rule-card" data-num="1">
+      <div class="rule-icon">🕐</div>
+      <h4>3 repas, pas de grignotage</h4>
+      <p>Petit-déjeuner, déjeuner, dîner. Espacés d'au moins 4h pour laisser l'insuline redescendre. Supprimer les collations en dehors des besoins réels.</p>
+    </div>
+    <div class="rule-card" data-num="2">
+      <div class="rule-icon">🐌</div>
+      <h4>Manger lentement</h4>
+      <p>Poser la fourchette entre chaque bouchée. La satiété met 20 min à se déclencher. Manger vite = manger plus. Viser 20 min minimum par repas.</p>
+    </div>
+    <div class="rule-card" data-num="3">
+      <div class="rule-icon">🥗</div>
+      <h4>Commencer par les légumes</h4>
+      <p>Débuter chaque repas par les fibres (légumes, salade). Cela ralentit l'absorption du sucre et provoque une satiété plus précoce.</p>
+    </div>
+    <div class="rule-card" data-num="4">
+      <div class="rule-icon">🌈</div>
+      <h4>Varier les couleurs</h4>
+      <p>Chaque couleur de légume = une famille de micronutriments différente. Objectif : 3 couleurs différentes dans l'assiette à chaque repas.</p>
+    </div>
+    <div class="rule-card" data-num="5">
+      <div class="rule-icon">🌙</div>
+      <h4>Alléger le soir</h4>
+      <p>Le dîner est le repas où le corps brûle le moins. Réduire les féculents le soir, favoriser légumes + protéine légère. Dîner avant 20h si possible.</p>
+    </div>
+    <div class="rule-card" data-num="6">
+      <div class="rule-icon">🚫</div>
+      <h4>Pas d'interdit absolu</h4>
+      <p>Un plaisir occasionnel ne sabote rien. L'interdit crée l'obsession. La règle : 80% de repas équilibrés, 20% de souplesse, sans culpabilité.</p>
+    </div>
+  </div>
+
+  <!-- ANTI-INFLAMMATOIRE -->
+  <div class="anti-section">
+    <div class="section-title"><span class="ico">🔥</span> Alimentation anti-inflammatoire</div>
+    <p style="font-size:13px;color:var(--stone);line-height:1.7;margin-bottom:20px;">L'inflammation chronique aggrave l'arthrose et favorise la prise de poids. Certains aliments l'alimentent, d'autres la réduisent activement.</p>
+    <div class="anti-cols">
+      <div class="anti-col yes">
+        <div class="anti-col-header">✅ À privilégier</div>
+        <div class="anti-col-body">
+          <div class="anti-item"><div class="ai-icon">🐟</div><div class="ai-text"><strong>Poissons gras</strong><span>Sardine, maquereau, saumon — 2×/semaine. Riches en oméga-3.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🫒</div><div class="ai-text"><strong>Huile d'olive extra-vierge</strong><span>En cuisson douce et en assaisonnement. Source d'oléocanthal.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🫐</div><div class="ai-text"><strong>Fruits rouges & baies</strong><span>Myrtilles, framboises, cerises. Puissants antioxydants.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🥬</div><div class="ai-text"><strong>Légumes verts foncés</strong><span>Épinards, brocoli, chou kale. Magnésium et vitamine K.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🧄</div><div class="ai-text"><strong>Ail, oignon, curcuma</strong><span>À cuisiner quotidiennement. Effets anti-inflammatoires prouvés.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🫘</div><div class="ai-text"><strong>Légumineuses</strong><span>Lentilles, pois chiches, haricots. Protéines + fibres + minéraux.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🍵</div><div class="ai-text"><strong>Thé vert & infusions</strong><span>Polyphénols anti-oxydants. Peut remplacer le café en excès.</span></div></div>
+        </div>
+      </div>
+      <div class="anti-col no">
+        <div class="anti-col-header">⚠️ À réduire</div>
+        <div class="anti-col-body">
+          <div class="anti-item"><div class="ai-icon">🍬</div><div class="ai-text"><strong>Sucres ajoutés</strong><span>Sodas, pâtisseries, bonbons. Premier facteur d'inflammation.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🍔</div><div class="ai-text"><strong>Produits ultra-transformés</strong><span>Plats préparés, charcuteries industrielles, chips.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🧈</div><div class="ai-text"><strong>Graisses saturées en excès</strong><span>Beurre en grande quantité, fromages gras quotidiens, fritures.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🍞</div><div class="ai-text"><strong>Céréales raffinées</strong><span>Pain blanc, riz blanc, pâtes classiques — à remplacer par du complet.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🧂</div><div class="ai-text"><strong>Sel en excès</strong><span>Favorise la rétention d'eau et aggrave les douleurs articulaires.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🍷</div><div class="ai-text"><strong>Alcool</strong><span>À limiter fortement : pro-inflammatoire, calorique, perturbe le sommeil.</span></div></div>
+          <div class="anti-item"><div class="ai-icon">🥩</div><div class="ai-text"><strong>Viande rouge</strong><span>Max 1×/semaine. Préférer volaille, œufs, poisson, légumineuses.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPAS TYPES -->
+  <div class="meals-section">
+    <div class="section-title"><span class="ico">☀️</span> Exemples de repas types</div>
+    <div class="meal-tabs">
+      <div class="meal-tab active" onclick="showMeal('breakfast',this)">Petit-déjeuner</div>
+      <div class="meal-tab" onclick="showMeal('lunch',this)">Déjeuner</div>
+      <div class="meal-tab" onclick="showMeal('dinner',this)">Dîner</div>
+    </div>
+
+    <!-- BREAKFAST -->
+    <div class="meal-panel active" id="meal-breakfast">
+      <div class="meal-card">
+        <div class="meal-card-header">
+          <h3>Petit-déjeuner rassasiant & doux</h3>
+          <span class="meal-kcal">~350–400 kcal</span>
+        </div>
+        <div class="meal-rows">
+          <div class="meal-row">
+            <div class="meal-row-icon p">🥚</div>
+            <div class="meal-row-text"><strong>1 œuf à la coque ou 2 c.à.s de fromage blanc nature 0%</strong><span>Protéine matinale essentielle pour tenir jusqu'au déjeuner sans grignoter</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon g">🍞</div>
+            <div class="meal-row-text"><strong>1 tranche de pain complet ou seigle</strong><span>Avec une fine couche de purée d'amande ou avocat — éviter la confiture sucrée</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon v">🫐</div>
+            <div class="meal-row-text"><strong>Une poignée de fruits rouges ou ½ fruit frais</strong><span>Anti-inflammatoire, fibres, vitamines — remplace le jus de fruit</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon f">🍵</div>
+            <div class="meal-row-text"><strong>Thé vert, infusion ou café (sans sucre)</strong><span>Pas de lait en excès. Un verre d'eau avant tout le reste.</span></div>
+          </div>
+        </div>
+        <div class="meal-examples"><strong>💡 À éviter le matin :</strong> céréales industrielles sucrées, viennoiseries, jus de fruit en brique, yaourts aux fruits sucrés.</div>
+      </div>
+    </div>
+
+    <!-- LUNCH -->
+    <div class="meal-panel" id="meal-lunch">
+      <div class="meal-card">
+        <div class="meal-card-header">
+          <h3>Déjeuner – Le repas principal</h3>
+          <span class="meal-kcal">~500–550 kcal</span>
+        </div>
+        <div class="meal-rows">
+          <div class="meal-row">
+            <div class="meal-row-icon v">🥗</div>
+            <div class="meal-row-text"><strong>Grande portion de légumes crus en entrée</strong><span>Tomates, concombre, carottes râpées, fenouil… assaisonnés à l'huile d'olive + vinaigre</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon p">🐟</div>
+            <div class="meal-row-text"><strong>Portion de protéine (taille de la paume)</strong><span>Poisson, volaille sans peau, œufs, légumineuses — cuit à la vapeur, four ou poêle sans friture</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon g">🍚</div>
+            <div class="meal-row-text"><strong>Portion de féculent complet (taille du poing)</strong><span>Riz complet, quinoa, lentilles, patate douce — pas de pain en plus</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon v">🥦</div>
+            <div class="meal-row-text"><strong>Légumes cuits en accompagnement</strong><span>Brocoli, haricots verts, courgettes, poêlée d'épinards — avec ail & huile d'olive</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon b">🫒</div>
+            <div class="meal-row-text"><strong>1 c.à.s d'huile d'olive pour la cuisson</strong><span>Pas de sauce industrielle. Herbes, épices, citron pour assaisonner.</span></div>
+          </div>
+        </div>
+        <div class="meal-examples"><strong>💡 Dessert :</strong> 1 fruit frais ou 1 yaourt nature — pas de dessert sucré systématique.</div>
+      </div>
+    </div>
+
+    <!-- DINNER -->
+    <div class="meal-panel" id="meal-dinner">
+      <div class="meal-card">
+        <div class="meal-card-header">
+          <h3>Dîner – Léger & anti-inflammatoire</h3>
+          <span class="meal-kcal">~350–400 kcal</span>
+        </div>
+        <div class="meal-rows">
+          <div class="meal-row">
+            <div class="meal-row-icon f">🍲</div>
+            <div class="meal-row-text"><strong>Soupe ou velouté de légumes maison</strong><span>Courgette, poireau, carotte, potimarron — sans crème, avec curcuma et gingembre</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon p">🥚</div>
+            <div class="meal-row-text"><strong>Protéine légère</strong><span>2 œufs, fromage blanc, sardines en boîte, ou reste de légumineuses du midi</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon v">🥬</div>
+            <div class="meal-row-text"><strong>Légumes à volonté</strong><span>La moitié de l'assiette minimum — cuits de préférence le soir (meilleure digestion)</span></div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-row-icon g">🍠</div>
+            <div class="meal-row-text"><strong>Féculents : optionnels ou très réduits</strong><span>Si activité physique le jour même : ok. Sinon, remplacer par plus de légumes.</span></div>
+          </div>
+        </div>
+        <div class="meal-examples"><strong>💡 Dîner anti-inflation :</strong> soupe maison + œufs brouillés aux épinards + 1 carré de chocolat noir 70%.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉFICIT CALORIQUE -->
+  <div class="deficit-section">
+    <div class="section-title"><span class="ico">⚖️</span> Le léger déficit calorique</div>
+    <div class="deficit-card">
+      <h3>📌 Le principe</h3>
+      <p>L'objectif n'est pas de compter les calories, mais de créer naturellement un léger déficit en ajustant la composition des repas. En remplaçant les aliments denses en calories (raffinés, gras saturés, sucrés) par des aliments rassasiants et peu caloriques (légumes, fibres, protéines maigres), le déficit s'installe seul — sans frustration.</p>
+    </div>
+    <div class="deficit-grid">
+      <div class="deficit-num">
+        <div class="num">~1600</div>
+        <div class="lbl">kcal / jour objectif doux</div>
+      </div>
+      <div class="deficit-num">
+        <div class="num">–200</div>
+        <div class="lbl">kcal de déficit journalier visé</div>
+      </div>
+      <div class="deficit-num">
+        <div class="num">0,5 kg</div>
+        <div class="lbl">perte max / semaine conseillée</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- À RÉDUIRE -->
+  <div class="section-title"><span class="ico">✂️</span> Petits changements, grand impact</div>
+  <div class="reduce-grid">
+    <div class="reduce-item soft">
+      <div class="ri-icon">🧃</div>
+      <div class="ri-name">Jus & sodas</div>
+      <div class="ri-tip">→ Eau plate, eau pétillante, infusion froide</div>
+    </div>
+    <div class="reduce-item soft">
+      <div class="ri-icon">🍞</div>
+      <div class="ri-name">Pain blanc</div>
+      <div class="ri-tip">→ Pain complet, seigle, ou épeautre</div>
+    </div>
+    <div class="reduce-item soft">
+      <div class="ri-icon">🍚</div>
+      <div class="ri-name">Riz blanc</div>
+      <div class="ri-tip">→ Riz complet, quinoa, sarrasin</div>
+    </div>
+    <div class="reduce-item soft">
+      <div class="ri-icon">🧁</div>
+      <div class="ri-name">Collation sucrée</div>
+      <div class="ri-tip">→ Poignée d'oléagineux ou fruit frais</div>
+    </div>
+    <div class="reduce-item soft">
+      <div class="ri-icon">🥩</div>
+      <div class="ri-name">Viande rouge</div>
+      <div class="ri-tip">→ Poisson, volaille, lentilles</div>
+    </div>
+    <div class="reduce-item soft">
+      <div class="ri-icon">🧀</div>
+      <div class="ri-name">Fromage quotidien</div>
+      <div class="ri-tip">→ 1–2× / semaine max, en plaisir</div>
+    </div>
+  </div>
+
+  <!-- OBJECTIFS DU JOUR -->
+  <div class="goals-section">
+    <div class="section-title"><span class="ico">🎯</span> Mes objectifs du jour</div>
+
+    <div class="goals-date-bar">
+      <div class="goals-date" id="today-label">Aujourd'hui</div>
+      <div class="goals-score">
+        <div class="goals-score-ring">
+          <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="ring-bg" cx="24" cy="24" r="20"/>
+            <circle class="ring-fill" id="ring-fill" cx="24" cy="24" r="20"/>
+          </svg>
+          <div class="goals-score-pct" id="score-pct">0%</div>
+        </div>
+        <div class="goals-score-label">objectifs<br>validés</div>
+      </div>
+      <button class="goals-reset" onclick="resetGoals()">↺ Réinitialiser</button>
+    </div>
+
+    <div class="goals-grid" id="goals-grid">
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g1">
+        <div class="goal-top"><div class="goal-emoji">🥗</div><div class="goal-check"></div></div>
+        <div class="goal-name">½ assiette de légumes</div>
+        <div class="goal-sub">Au moins 1 repas avec la moitié en légumes</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g2">
+        <div class="goal-top"><div class="goal-emoji">🐟</div><div class="goal-check"></div></div>
+        <div class="goal-name">Protéine à chaque repas</div>
+        <div class="goal-sub">Poisson, volaille, œuf ou légumineuse</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g3">
+        <div class="goal-top"><div class="goal-emoji">🍞</div><div class="goal-check"></div></div>
+        <div class="goal-name">Féculent complet uniquement</div>
+        <div class="goal-sub">Riz complet, quinoa, pain seigle…</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g4">
+        <div class="goal-top"><div class="goal-emoji">🧄</div><div class="goal-check"></div></div>
+        <div class="goal-name">Épice anti-inflammatoire</div>
+        <div class="goal-sub">Curcuma, gingembre ou ail dans un plat</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g5">
+        <div class="goal-top"><div class="goal-emoji">🚫</div><div class="goal-check"></div></div>
+        <div class="goal-name">0 grignotage entre repas</div>
+        <div class="goal-sub">3 repas structurés, pas de collation</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g6">
+        <div class="goal-top"><div class="goal-emoji">🌙</div><div class="goal-check"></div></div>
+        <div class="goal-name">Dîner léger et tôt</div>
+        <div class="goal-sub">Peu ou pas de féculents, avant 20h</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g7">
+        <div class="goal-top"><div class="goal-emoji">🐌</div><div class="goal-check"></div></div>
+        <div class="goal-name">Manger lentement</div>
+        <div class="goal-sub">Poser la fourchette entre chaque bouchée</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+      <div class="goal-card" onclick="toggleGoal(this)" data-id="g8">
+        <div class="goal-top"><div class="goal-emoji">🫒</div><div class="goal-check"></div></div>
+        <div class="goal-name">Huile d'olive utilisée</div>
+        <div class="goal-sub">En cuisson ou assaisonnement</div>
+        <div class="goal-bar-wrap"><div class="goal-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="streak-banner" id="streak-banner">
+      <div class="sb-icon">🏆</div>
+      <div class="sb-text">
+        <strong>Tous les objectifs validés !</strong>
+        Bravo, journée parfaite. Votre corps vous remercie. 🌿
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKER REPAS -->
+  <div class="tracker-section">
+    <div class="section-title"><span class="ico">📝</span> Mon carnet de bord repas</div>
+    <div class="tracker-meals">
+
+      <div class="tracker-meal" id="tm-matin">
+        <div class="tm-header" onclick="toggleTracker('matin')">
+          <div class="tm-icon matin">🌅</div>
+          <div class="tm-title"><strong>Petit-déjeuner</strong><span>Cochez ce que vous avez mangé</span></div>
+          <div class="tm-status" id="ts-matin">Non renseigné</div>
+        </div>
+        <div class="tm-body">
+          <div class="tm-checks">
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🥚 Protéine (œuf, fromage blanc, jambon blanc)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🍞 Pain complet ou seigle (1 tranche)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🫐 Fruit frais ou baies</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🍵 Boisson sans sucre (thé, café, eau)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🚫 Pas de sucre ajouté ni viennoiserie</div>
+          </div>
+          <button class="tm-log-btn" onclick="logMeal('matin')">✓ Valider ce repas</button>
+        </div>
+      </div>
+
+      <div class="tracker-meal" id="tm-midi">
+        <div class="tm-header" onclick="toggleTracker('midi')">
+          <div class="tm-icon midi">☀️</div>
+          <div class="tm-title"><strong>Déjeuner</strong><span>Cochez ce que vous avez mangé</span></div>
+          <div class="tm-status" id="ts-midi">Non renseigné</div>
+        </div>
+        <div class="tm-body">
+          <div class="tm-checks">
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🥗 Légumes crus en entrée</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🐟 Protéine principale (poisson, volaille…)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🍚 Féculent complet (riz complet, quinoa…)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🥦 Légumes cuits en accompagnement</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🫒 Huile d'olive pour assaisonner</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🍎 Dessert : fruit ou yaourt nature</div>
+          </div>
+          <button class="tm-log-btn" onclick="logMeal('midi')">✓ Valider ce repas</button>
+        </div>
+      </div>
+
+      <div class="tracker-meal" id="tm-soir">
+        <div class="tm-header" onclick="toggleTracker('soir')">
+          <div class="tm-icon soir">🌙</div>
+          <div class="tm-title"><strong>Dîner</strong><span>Cochez ce que vous avez mangé</span></div>
+          <div class="tm-status" id="ts-soir">Non renseigné</div>
+        </div>
+        <div class="tm-body">
+          <div class="tm-checks">
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🍲 Soupe ou velouté de légumes maison</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🥚 Protéine légère (œufs, sardines…)</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🥬 Légumes cuits abondants</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🧄 Épice anti-inflammatoire cuisinée</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🌙 Dîner terminé avant 20h</div>
+            <div class="tm-check-item" onclick="toggleCheck(this)"><div class="tci-box"></div>🚫 Pas de sucre ni alcool ce soir</div>
+          </div>
+          <button class="tm-log-btn" onclick="logMeal('soir')">✓ Valider ce repas</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HYDRATATION -->
+  <div class="hydro-bar">
+    <div class="hydro-icon">💧</div>
+    <div class="hydro-text" style="flex:1">
+      <h4>Hydratation : 1,5 à 2 litres d'eau par jour</h4>
+      <p>L'eau participe à la lubrification des articulations (essentiel pour l'arthrose), aide à l'élimination et réduit les fausses faims. Commencez chaque repas par un grand verre d'eau.</p>
+      <div class="hydro-glasses" id="glasses">
+        <span class="glass filled" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass filled" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass filled" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass filled" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass" onclick="toggleGlass(this)">🥤</span>
+        <span class="glass" onclick="toggleGlass(this)">🥤</span>
+      </div>
+      <p style="font-size:11px;margin-top:8px;color:#aaa;">Tapez sur les verres pour suivre votre hydratation du jour !</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>Document indicatif – non substitutif à un suivi diététique personnalisé.</strong><br>Pour un accompagnement sur mesure et adapté à votre état de santé, consultez un médecin ou une diététicienne nutritionniste.</p>
+</footer>
+
+<script>
+  // ── Repas types tabs
+  function showMeal(id, tab) {
+    document.querySelectorAll('.meal-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.meal-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('meal-' + id).classList.add('active');
+    tab.classList.add('active');
+  }
+
+  // ── Hydratation
+  function toggleGlass(el) {
+    el.classList.toggle('filled');
+    updateGlassCount();
+  }
+  function updateGlassCount() {
+    const total = document.querySelectorAll('.glass').length;
+    const filled = document.querySelectorAll('.glass.filled').length;
+    const pct = Math.round(filled / total * 100);
+    const label = document.getElementById('hydro-label');
+    if (label) label.textContent = filled + ' verre' + (filled > 1 ? 's' : '') + ' sur ' + total + ' (' + pct + '%)';
+  }
+
+  // ── Objectifs du jour
+  const TOTAL_GOALS = 8;
+  function toggleGoal(card) {
+    const wasDone = card.classList.contains('done');
+    card.classList.toggle('done');
+    if (!wasDone) spawnConfetti(card);
+    updateScore();
+  }
+
+  function spawnConfetti(card) {
+    const colors = ['#6b9c5a','#c4622d','#c49a3c','#3a6b8a','#a3b56a'];
+    for (let i = 0; i < 6; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'confetti-dot';
+      dot.style.background = colors[i % colors.length];
+      dot.style.left = (20 + Math.random() * 60) + '%';
+      dot.style.top = (20 + Math.random() * 60) + '%';
+      dot.style.animationDelay = (Math.random() * 0.15) + 's';
+      card.appendChild(dot);
+      setTimeout(() => dot.remove(), 700);
+    }
+  }
+
+  function updateScore() {
+    const done = document.querySelectorAll('.goal-card.done').length;
+    const pct = Math.round(done / TOTAL_GOALS * 100);
+    const circumference = 126;
+    const offset = circumference - (pct / 100) * circumference;
+    document.getElementById('ring-fill').style.strokeDashoffset = offset;
+    document.getElementById('score-pct').textContent = pct + '%';
+
+    const banner = document.getElementById('streak-banner');
+    if (done === TOTAL_GOALS) {
+      banner.classList.add('visible');
+      banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      banner.classList.remove('visible');
+    }
+  }
+
+  function resetGoals() {
+    document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('done'));
+    updateScore();
+  }
+
+  // ── Date du jour
+  const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const now = new Date();
+  document.getElementById('today-label').textContent =
+    days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
+
+  // ── Tracker repas
+  function toggleTracker(id) {
+    const el = document.getElementById('tm-' + id);
+    el.classList.toggle('open');
+  }
+
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    const box = item.querySelector('.tci-box');
+    box.textContent = item.classList.contains('checked') ? '✓' : '';
+  }
+
+  function logMeal(id) {
+    const el = document.getElementById('tm-' + id);
+    const status = document.getElementById('ts-' + id);
+    const checks = el.querySelectorAll('.tm-check-item');
+    const checked = el.querySelectorAll('.tm-check-item.checked').length;
+    el.classList.add('logged');
+    el.classList.remove('open');
+    status.textContent = checked + '/' + checks.length + ' ✓';
+
+    // Petite animation de succès
+    status.style.transform = 'scale(1.2)';
+    setTimeout(() => status.style.transform = 'scale(1)', 300);
+  }
+</script>
+</body>
+</html>
